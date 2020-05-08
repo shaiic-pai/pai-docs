@@ -55,7 +55,7 @@ There is a shortcut to k8s dashboard on the webportal. However, it needs special
 
    <img src="./imgs/k8s-dashboard.png" width="100%" height="100%" />
 
-To access it, we need to do following steps on the dev box machine.
+To use it, you should first set up `https` access (Using `http://<ip>` won't work) for OpenPAI. Then, on the dev box machine, follow the steps below:
 
 1. Save following yaml text as `admin-user.yaml`
     ```yaml
@@ -140,7 +140,7 @@ webportal:
   server-port: 9286
 ```
 
-It is the configuration of webportal. Now let's change the title of one plugin: modify `title: Marketplace` to `title: MyMarketplace`, and save the file.
+It is the configuration for webportal. Now let's change the title of one plugin: modify `title: Marketplace` to `title: MyMarketplace`, and save the file.
 
 Use the following command to push the configuration and restart webportal:
 

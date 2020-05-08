@@ -23,7 +23,7 @@ HiveD is a standalone component of OpenPAI, designed to be a Kubernetes Schedule
 
 Before we start, please read [this doc](https://github.com/microsoft/hivedscheduler/blob/master/doc/user-manual.md) to learn how to write hived scheduler configuration.
 
-## How to Set Up Virtuall Clusters
+## How to Set Up Virtual Clusters
 
 In [`services-configuration.yaml`](./basic-management-operations.md#pai-service-management-and-paictl), there is a section for hived scheduler, for example:
 
@@ -103,8 +103,8 @@ After modification, use the following commands to apply the settings:
 
 ```bash
 ./paictl.py service stop -n rest-server hivedscheduler
-./paictl config push -p <config-folder> -m service
-./paictl.py service start -n cluster-configuartion
+./paictl.py config push -p <config-folder> -m service
+./paictl.py service start -n cluster-configuration
 ./paictl.py service start -n hivedscheduler rest-server
 ```
 
@@ -155,8 +155,8 @@ This should be self-explanatory. The `virtualClusters` field is used to manage V
 
 ```bash
 ./paictl.py service stop -n rest-server hivedscheduler
-./paictl config push -p <config-folder> -m service
-./paictl.py service start -n cluster-configuartion
+./paictl.py config push -p <config-folder> -m service
+./paictl.py service start -n cluster-configuration
 ./paictl.py service start -n hivedscheduler rest-server
 ```
 

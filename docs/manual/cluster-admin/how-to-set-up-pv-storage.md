@@ -23,7 +23,7 @@ This document describes how to use Kubernetes Persistent Volumes (PV) as storage
   2. Confirm the worker nodes have proper package to mount the PVC. For example, the `NFS` PVC requires package `nfs-common` to work on Ubuntu.
   3. Assign PVC to specific user groups.
 
-Users could mount those PV/PVC their jobs after you set up the storage properly. The name of PVC is used to onboard on PAI.
+Users could mount those PV/PVC into their jobs after you set up the storage properly. The name of PVC is used to onboard on PAI.
 
 ## Create PV/PVC on Kubernetes
 
@@ -84,6 +84,44 @@ Please refer to [this document](https://github.com/Azure/kubernetes-volume-drive
 ### Azure Blob
 
 Please refer to [this document](https://github.com/Azure/kubernetes-volume-drivers/blob/master/flexvolume/blobfuse/README.md) to install blobfuse FlexVolume driver and create PV/PVC for Azure Blob.
+
+#### Tips
+
+If you cannot mount blobfuse PVC into containers and the corresponding job in OpenPAI sticks in `WAITING` status, please double check the following requirements:
+
+1. Every worker node should have `blobfuse` installed. Try the following commands to ensure:
+
+```bash
+# change 16.04 to a different release if your system is not Ubuntu 16.04
+wget https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt-get update
+sudo apt-get install --assume-yes blobfuse fuse
+```
+
+2. `blobfuse` driver has been installed:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/Azure/kubernetes-volume-drivers/master/flexvolume/blobfuse/deployment/blobfuse-flexvol-installer-1.9.yaml
+```
+
+3. On every worker node, enable FlexVolume driver in `kubelet` service.
+
+Add `--volume-plugin-dir=/etc/kubernetes/volumeplugins` to file `/etc/systemd/system/kubelet.service`:
+
+```
+......
+ExecStart=/usr/local/bin/kubelet \
+                --volume-plugin-dir=/etc/kubernetes/volumeplugins \
+......
+```
+
+Restart kubelet:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+```
 
 ### Azure File
 
@@ -154,7 +192,7 @@ There are two ways to assign storage to user groups:
 
 ### 1. Modify service configuration. 
 
-It is only feasible in [AAD authentication clusters](./how-to-manage-users-and-groups.md#users-and-groups-in-aad-mode). If you are using [basic authentication](./how-to-manage-users-and-groups.md#users-and-groups-in-basic-authentication-mode), please refer to [Use RESTful API](#use-restful-api).
+It is only feasible in [AAD authentication clusters](./how-to-manage-users-and-groups.md#users-and-groups-in-aad-mode). If you are using [basic authentication](./how-to-manage-users-and-groups.md#users-and-groups-in-basic-authentication-mode), please refer to [Use RESTful API](#2-use-restful-api).
 
 To assign storage to groups, modify your [`services-configuration.yaml` file](./basic-management-operations.md#pai-service-management-and-paictl):
 
@@ -190,16 +228,47 @@ The `storageConfigs` field is used to assign storage. You should fill in the cor
 
 ### 2. Use RESTful API
 
-This way is feasible in all clusters, including [AAD authentication clusters](./how-to-manage-users-and-groups.md#users-and-groups-in-aad-mode) and [basic authentication clusters](./how-to-manage-users-and-groups.md#users-and-groups-in-basic-authentication-mode).
+This way is feasible in all clusters, including [AAD authentication clusters](./how-to-manage-users-and-groups.md#users-and-groups-in-aad-mode) and [basic authentication clusters](./how-to-manage-users-and-groups.md#users-and-groups-in-basic-authentication-mode). It queries RESTful API directly.
 
-[Group extension API](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/microsoft/pai/master/src/rest-server/docs/swagger.yaml#operation/updateGroupExtension) could be used to create or update `storageConfigs` in a given group. Here's an example for request body:
+Before querying the API, you should get an access token for the API. Go to your profile page and copy one:
+
+<img src="./imgs/get-token.png" />
+
+In OpenPAI, storage is bound to group. Thus you use the [Group API](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/microsoft/pai/master/src/rest-server/docs/swagger.yaml#tag/group) to assign storage to groups. [Get a group](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/microsoft/pai/master/src/rest-server/docs/swagger.yaml#operation/getGroup) first, and then [Update its extension](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/microsoft/pai/master/src/rest-server/docs/swagger.yaml#operation/updateGroup).
+
+For example, if you want to assign `nfs-storage` PVC to `default` group. First, GET `http://<pai-master-ip>/rest-server/api/v2/groups/default`, it will return:
 
 ```json
 {
-  "acls": {
-    "admin": false,
-    "virtualClusters": ["vc1", "vc2"],
-    "storageConfigs": ["nfs-storage"]
-  }
+  "groupname": "default",
+  "description": "group for default vc",
+  "externalName": "",
+  "extension": {
+    "acls": {
+      "storageConfigs": [],
+      "admin": false,
+      "virtualClusters": ["default"]
+    }
+  }
 }
 ```
+
+The GET request must use header `Authorization: Bearer <token>` for authorization. This remains the same for all API calls. You may notice the `storageConfigs` in the return body. In fact it controls which storage a group can use. To add a `nfs-storage` to it, PUT `http://<pai-master-ip>/rest-server/api/v2/groups`. Request body is:
+
+```json
+{
+  "data": {
+    "groupname": "default",
+    "extension": {
+      "acls": {
+        "storageConfigs": ["nfs-storage"],
+        "admin": false,
+        "virtualClusters": ["default"]
+      }
+    }
+  },
+  "patch": true
+}
+```
+
+Do not omit any fields in `extension` or it will change the `virtualClusters` setting unexpectedly.

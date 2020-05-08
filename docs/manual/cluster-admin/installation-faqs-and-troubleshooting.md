@@ -17,27 +17,27 @@
 
 ## Installation FAQs
 
-**1. How to include worker nodes with different hardwares?**
+#### 1. How to include worker nodes with different hardwares?
 
 In the [installation guide](./installation-guide.md), we assume all worker nodes should have the same hardware. If you have different hardware types, we suggest to include only one type of workers during installation, then follow [How to Add Nodes](./how-to-add-and-remove-nodes.md#how-to-add-nodes) to add nodes with different types. There is also [an example](./how-to-set-up-virtual-clusters.md#different-hardwares-in-worker-nodes) about how to configure hived scheduler when you have different GPU types in worker nodes.
 
-**2. How to include CPU-only worker nodes?**
+#### 2. How to include CPU-only worker nodes?
 
 In current release, the support for CPU nodes is limited. Please refer to [How to Use CPU Nodes](./how-to-use-cpu-nodes.md) for details.
 
-**3. Which NVIDIA driver should I install?**
+#### 3. Which version of NVIDIA driver should I install?
 
 First, check out the [NVIDIA site](https://www.nvidia.com/Download/index.aspx) to verify the newest driver version of your GPU card. Then, check out [this table](https://docs.nvidia.com/deploy/cuda-compatibility/index.html#binary-compatibility__table-toolkit-driver) to see the CUDA requirement of driver version.
 
 Please note that, some docker images with new CUDA version cannot be used on machine with old driver. As for now, we recommend to install the NVIDIA driver 418 as it supports CUDA 9.0 \~ CUDA 10.1, which is used by most deep learning frameworks.
 
-**4. How to fasten deploy speed on large cluster?**
+#### 4. How to fasten deploy speed on large cluster?
 
 By default, `Ansible` uses 5 forks to execute commands parallelly on all hosts. If your cluster is a large one, it may be slow for you.
 
 To fasten the deploy speed, you can add `-f <parallel-number>` to all commands using `ansible` or `ansible-playbook`. See [ansible doc](https://docs.ansible.com/ansible/latest/cli/ansible.html#cmdoption-ansible-f) for reference.
 
-**5. How to remove k8s network plugin**
+#### 5. How to remove k8s network plugin
 
 By default, we use [weave](https://github.com/weaveworks/weave) as k8s network plugin. After installation, if you encounter some errors about the network, such as some pods failed to connect internet, you could remove network plugin to solve this issue.
 
@@ -75,6 +75,39 @@ To remove the network plugin, you could use following `ansible-playbook`:
 ```
 
 After this step, if your pod still can not access internet, please change the pod spec to use `hostNetwork`.
+
+#### 6. How to check whether the GPU driver is installed?
+
+For Nvidia GPU, use command `nvidia-smi` to check.
+
+#### 7. How to install GPU driver?
+
+For Nvidia GPU, please first determine which version of driver you want to install (see [this question](#3-which-version-of-nvidia-driver-should-i-install) for details). Then follow these commands:
+
+```bash
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+sudo apt install nvidia-418
+sudo reboot
+```
+
+Here we use nvidia driver version 418 as an example. Please modify `nvidia-418` if you want to install a different version, and refer to the Nvidia community for help if encounter any problem.
+
+#### 8. How to install nvidia-container-runtime?
+
+Please refer to the [official document](https://github.com/NVIDIA/nvidia-container-runtime#installation). Don't forget to set it as docker' default runtime in [docker-config-file](https://docs.docker.com/config/daemon/#configure-the-docker-daemon). Here is an example of `/etc/docker/daemon.json`:
+
+```
+{
+  "default-runtime": "nvidia",
+  "runtimes": {
+      "nvidia": {
+          "path": "/usr/bin/nvidia-container-runtime",
+          "runtimeArgs": []
+      }
+  }
+}
+```
 
 ## Troubleshooting
 

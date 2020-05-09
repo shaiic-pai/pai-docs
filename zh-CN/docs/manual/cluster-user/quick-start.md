@@ -1,8 +1,8 @@
-# Quick Start
+# 快速入门
 
 1. [Quick Start](./quick-start.md) (this document)
     - [Submit a Hello World Job](#submit-a-hello-world-job)
-    - [Browse Stdout, Stderr, Full Logs, and Metrics](#browse-stdout-stderr-full-logs-and-metrics)
+    - [浏览Stdout、Stderr、完整日志和指标](#browse-stdout-stderr-full-logs-and-metrics)
     - [Submit a Hello World Job Step by Step](#submit-the-hello-world-job-step-by-step)
     - [Learn the Hello World Job](#learn-the-hello-world-job)
 2. [Docker Images and Job Examples](./docker-images-and-job-examples.md)
@@ -15,7 +15,7 @@
 
 ## Submit a Hello World Job
 
-The **job** of OpenPAI defines how to execute code(s) and command(s) in specified environment(s). It can be run on a single node or distributedly.
+The **job** of OpenPAI defines how to execute code(s) and command(s) in specified environment(s). 它可以在单个节点上运行或分布式运行。
 
 For a quick start, please download [`hello-world-job.yaml`](./examples/hello-world-job.yaml).
 
@@ -37,7 +37,7 @@ Click `Stdout` and `Stderr` button to see the stdout and stderr logs for a job o
 
 <img src="./imgs/view-logs.png" width="90%" height="90%" />
 
-As shown in the following picture, we will only show last 16KB logs in the dialog. Click `View Full Log` for a full log.
+如下面的图片所示，我们只会在对话框中显示最近的16KB日志。 Click `View Full Log` for a full log.
 
 <img src="./imgs/view-stderr.png" width="90%" height="90%" />
 

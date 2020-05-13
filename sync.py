@@ -28,11 +28,11 @@ def safe_copy(
 ):
     try:
         if os.path.isdir(src):
-            if os.path.isdir(dst):
+            if os.path.exists(dst):
                 __logger__.warning('%s already exists, remove it first', dst)
                 shutil.rmtree(dst)
                 __logger__.info('copy directory %s to %s', src, dst)
-                shutil.copytree(src, dst)
+            shutil.copytree(src, dst)
         else:
             shutil.copy(src, dst)
     except IOError as err:

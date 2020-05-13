@@ -16,7 +16,7 @@ nav:
   - Installation FAQs and Troubleshooting: manual/cluster-admin/installation-faqs-and-troubleshooting.md
   - Basic Management Operations: manual/cluster-admin/basic-management-operations.md
   - How to Manage Users and Groups: manual/cluster-admin/how-to-manage-users-and-groups.md
-  - How to Setup Kubernetes Persistent Volumes as Storage: manual/cluster-admin/how-to-set-up-pv-storage.md
+  - How to Set Up Storage: manual/cluster-admin/how-to-set-up-storage.md
   - How to Set Up Virtual Clusters: manual/cluster-admin/how-to-set-up-virtual-clusters.md
   - How to Add and Remove Nodes: manual/cluster-admin/how-to-add-and-remove-nodes.md
   - How to use CPU Nodes: manual/cluster-admin/how-to-use-cpu-nodes.md

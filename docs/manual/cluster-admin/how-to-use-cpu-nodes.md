@@ -4,7 +4,7 @@
 2. [Installation FAQs and Troubleshooting](./installation-faqs-and-troubleshooting.md)
 3. [Basic Management Operations](./basic-management-operations.md)
 4. [How to Manage Users and Groups](./how-to-manage-users-and-groups.md)
-5. [How to Setup Kubernetes Persistent Volumes as Storage](./how-to-set-up-pv-storage.md)
+5. [How to Set Up Storage](./how-to-set-up-storage.md)
 6. [How to Set Up Virtual Clusters](./how-to-set-up-virtual-clusters.md)
 7. [How to Add and Remove Nodes](./how-to-add-and-remove-nodes.md)
 8. [How to use CPU Nodes](./how-to-use-cpu-nodes.md) (this document)
@@ -21,7 +21,7 @@ In current release, support for CPU nodes is limited. The [installation guide](.
 
 Adding CPU nodes is not much differnt from adding GPU nodes, as we have decribed in [How to Add and Remove Nodes](./how-to-add-and-remove-nodes.md). So you can follow that document basically. Meanwhile, there are two differences for CPU-only nodes:
 
-In the preparation phase, you don't need to check GPU driver and Nvidia docker runtime.
+In the preparation phase, you don't need to check GPU driver and `nvidia-container-runtime`.
 
 In the hived scheduler setting, you should omit `gpu` field or use `gpu: 0` in `skuTypes` for your CPU-only VCs. Don't mix CPU nodes with GPU nodes. Here is an example:
 

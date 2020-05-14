@@ -7,7 +7,7 @@
 5. [How to Set Up Storage](./how-to-set-up-storage.md)
 6. [How to Set Up Virtual Clusters](./how-to-set-up-virtual-clusters.md) (this document)
     - [What is Hived Scheduler and How to Configure it](#what-is-hived-scheduler-and-how-to-configure-it)
-    - [How to Set Up Virtuall Clusters](#how-to-set-up-virtuall-clusters)
+    - [Set Up Virtual Clusters](#set-up-virtual-clusters)
     - [How to Grant VC to Users](#how-to-grant-vc-to-users)
     - [Different Hardwares in Worker Nodes](#different-hardwares-in-worker-nodes)
 7. [How to Add and Remove Nodes](./how-to-add-and-remove-nodes.md)
@@ -23,17 +23,17 @@ HiveD is a standalone component of OpenPAI, designed to be a Kubernetes Schedule
 
 Before we start, please read [this doc](https://github.com/microsoft/hivedscheduler/blob/master/doc/user-manual.md) to learn how to write hived scheduler configuration.
 
-## How to Set Up Virtual Clusters
+## Set Up Virtual Clusters
 
 In [`services-configuration.yaml`](./basic-management-operations.md#pai-service-management-and-paictl), there is a section for hived scheduler, for example:
 
 ```yaml
-# service-configuration.yaml
+# services-configuration.yaml
 ...
 hivedscheduler:
   config: |
     physicalCluster:
-      gpuTypes:
+      skuTypes:
         DT:
           gpu: 1
           cpu: 5
@@ -63,12 +63,12 @@ hivedscheduler:
 If you have followed the [installation guide](./installation-guide.md), you would find similar setting in your [`services-configuration.yaml`](./basic-management-operations.md#pai-service-management-and-paictl). The detailed explanation of these fields are in the [hived scheduler document](https://github.com/microsoft/hivedscheduler/blob/master/doc/user-manual.md). You can update the configuration and set up virtual clusters. For example, in the above settings, we have 3 nodes, `worker1`, `worker2` and `worker3`. They are all in the `default` virtual cluster. If we want to create two VCs, one is called `default` and has 2 nodes, the other is called `new` and has 1 node, we can first modify `services-configuration.yaml`:
 
 ```yaml
-# service-configuration.yaml
+# services-configuration.yaml
 ...
 hivedscheduler:
   config: |
     physicalCluster:
-      gpuTypes:
+      skuTypes:
         DT:
           gpu: 1
           cpu: 5
@@ -160,13 +160,13 @@ This should be self-explanatory. The `virtualClusters` field is used to manage V
 
 ## Different Hardwares in Worker Nodes
 
-We recommend one VC should have the same hardware, which leads to one `gpuType` of one VC in the hived scheduler setting. If you have different types of worker nodes (e.g. different GPU types on different nodes), please configure them in different VCs. Here is an example of 2 kinds of nodes:
+We recommend one VC should have the same hardware, which leads to one `skuType` of one VC in the hived scheduler setting. If you have different types of worker nodes (e.g. different GPU types on different nodes), please configure them in different VCs. Here is an example of 2 kinds of nodes:
 
 ```yaml
 hivedscheduler:
   config: |
     physicalCluster:
-      gpuTypes:
+      skuTypes:
         K80:
           gpu: 1
           cpu: 5

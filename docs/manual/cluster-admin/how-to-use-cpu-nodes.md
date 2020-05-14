@@ -76,7 +76,7 @@ Explanation of the above example: Supposing we have a node named `cpu-worker1` i
 
 ## Submit CPU-only Jobs
 
-If you want to submit a CPU-only job, please submit it directly to the CPU-only VC. A special requirement is that, you should use exactly same GPU number as the CPU number you want. For example, if you want to use 8 CPUs, you should set 8 GPUs and 8 CPUs as follows:
+If you want to submit a CPU-only job, please submit it directly to the CPU-only VC. A special requirement is that, you should use exactly the same GPU number as the CPU number you want. For example, if you want to use 8 CPUs, you should set 8 GPUs and 8 CPUs as follows:
 
 <img src="./imgs/cpu-resource.png" width="60%" height="60%" />
 

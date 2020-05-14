@@ -10,7 +10,7 @@
 8. [How to use CPU Nodes](./how-to-use-cpu-nodes.md)
 9. [How to Customize Cluster by Plugins](./how-to-customize-cluster-by-plugins.md)
 10. [Troubleshooting](./troubleshooting.md) (this document)
-    - [GPU is Not Detected](#gpu-is-not-detected)
+    - [NVIDIA GPU is Not Detected](#nvidia-gpu-is-not-detected)
     - [A Certain Node is Lost](#a-certain-node-is-lost)
     - [A Certain PAI Service is Not Working](#a-certain-pai-service-is-not-working)
 11. [How to Uninstall OpenPAI](./how-to-uninstall-openpai.md)

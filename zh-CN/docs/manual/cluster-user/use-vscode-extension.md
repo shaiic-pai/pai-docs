@@ -8,14 +8,12 @@
 6. [Use Marketplace](./use-marketplace.md)
 7. [Use VSCode Extension](./use-vscode-extension.md) (this document)
     - [Connect to an OpenPAI cluster](#connect-to-an-openpai-cluster)
-      - [Basic login](#basic-login)
-      - [AAD login](#aad-login)
     - [Submit job](#submit-job)
     - [Reference](#reference)
 8. [Use Jupyter Notebook Extension](./use-jupyter-notebook-extension.md)
 
 
-OpenPAI VS Code Client is a VSCode extension to connect OpenPAI clusters, submit AI jobs, simulate jobs locally, manage files, and so on.
+[OpenPAI VS Code Client](https://github.com/microsoft/openpaivscode) is a VSCode extension to connect OpenPAI clusters, submit AI jobs, simulate jobs locally, manage files, and so on. Please use the released vsix file on [this page](https://github.com/microsoft/openpaivscode/releases) to install it.
 
 ## Connect to an OpenPAI cluster
 

@@ -25,7 +25,7 @@ In current release, the support for CPU nodes is limited. Please refer to [How t
 
 First, check out the [NVIDIA site](https://www.nvidia.com/Download/index.aspx) to verify the newest driver version of your GPU card. Then, check out [this table](https://docs.nvidia.com/deploy/cuda-compatibility/index.html#binary-compatibility__table-toolkit-driver) to see the CUDA requirement of driver version.
 
-Please note that, some docker images with new CUDA version cannot be used on machine with old driver. As for now, we recommend to install the NVIDIA driver 418 as it supports CUDA 9.0 \~ CUDA 10.1, which is used by most deep learning frameworks.
+Please note that, some docker images with new CUDA version cannot be used on machine with old driver. As for now, we recommend to install the NVIDIA driver 418 as it supports CUDA 9.0 to CUDA 10.1, which is used by most deep learning frameworks.
 
 #### How to fasten deploy speed on large cluster?
 
@@ -35,7 +35,8 @@ To fasten the deploy speed, you can add `-f <parallel-number>` to all commands u
 
 #### How to remove k8s network plugin
 
-By default, we use [weave](https://github.com/weaveworks/weave) as k8s network plugin. After installation, if you encounter some errors about the network, such as some pods failed to connect internet, you could remove network plugin to solve this issue.
+
+After installation, if you use [weave](https://github.com/weaveworks/weave) as k8s network plugin and you encounter some errors about the network, such as some pods failed to connect internet, you could remove network plugin to solve this issue.
 
 To remove the network plugin, you could use following `ansible-playbook`:
 ```yaml

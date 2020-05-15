@@ -120,7 +120,7 @@ if __name__ == '__main__':
         'User Manual': get_index(os.path.join('docs', 'manual', 'cluster-user', 'README.md'))
     }
     cfg['nav'][2] = {
-        'Operational Manual': get_index(os.path.join('docs', 'manual', 'cluster-admin', 'README.md'))
+        'Admin Manual': get_index(os.path.join('docs', 'manual', 'cluster-admin', 'README.md'))
     }
     with open('mkdocs.yml', 'w') as fn:
         yaml.safe_dump(cfg, fn)

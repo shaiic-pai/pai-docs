@@ -27,5 +27,5 @@ nav:
 plugins:
   - search
 site_name: OpenPAI Handbook
-theme: mkdocs
+theme: readthedocs
 use_directory_urls: false

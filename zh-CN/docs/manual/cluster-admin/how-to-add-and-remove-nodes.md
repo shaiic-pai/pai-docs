@@ -4,7 +4,7 @@
 2. [Installation FAQs and Troubleshooting](./installation-faqs-and-troubleshooting.md)
 3. [Basic Management Operations](./basic-management-operations.md)
 4. [How to Manage Users and Groups](./how-to-manage-users-and-groups.md)
-5. [How to Setup Kubernetes Persistent Volumes as Storage](./how-to-set-up-pv-storage.md)
+5. [How to Set Up Storage](./how-to-set-up-storage.md)
 6. [How to Set Up Virtual Clusters](./how-to-set-up-virtual-clusters.md)
 7. [How to Add and Remove Nodes](./how-to-add-and-remove-nodes.md) (this document)
     - [How to Add Nodes](#how-to-add-nodes)
@@ -26,22 +26,12 @@ To add worker nodes, please check if the nodes meet the following requirements:
   - Ubuntu 16.04 (18.04 should work, but not fully tested.)
   - Assign each node a **static IP address**, and make sure nodes can communicate with each other.
   - The nodes can access internet, especially need to have access to the docker hub registry service or its mirror. Deployment process will pull Docker images.
-  - SSH service is enabled and share the same username/password and have sudo privilege.
-  - **GPU driver is installed.**
-  - **Docker is installed.**
-  - **Nvidia docker runtime or other device runtime is installed. And be configured as the default runtime of docker. Please configure it in [docker-config-file](https://docs.docker.com/config/daemon/#configure-the-docker-daemon), because kubespray will overwrite systemd's env.**
-      - An example of `/etc/docker/daemon.json` to configure nvidia-runtime as default runtime.
-          <pre>
-          {
-            "default-runtime": "nvidia",
-            "runtimes": {
-                "nvidia": {
-                    "path": "/usr/bin/nvidia-container-runtime",
-                    "runtimeArgs": []
-                }
-            }
-          }
-          </pre>
+  - SSH service is enabled and share the same username/password with current master/worker machines and have sudo privilege.
+  - **Have GPU and GPU driver is installed.**  You may use [a command](./installation-faqs-and-troubleshooting.md#how-to-check-whether-the-gpu-driver-is-installed) to check it. Refer to [the installation guidance](./installation-faqs-and-troubleshooting.md#how-to-install-gpu-driver) in FAQs if the driver is not successfully installed. If you are wondering which version of GPU driver you should use, please also refer to [FAQs](./installation-faqs-and-troubleshooting.md#which-version-of-nvidia-driver-should-i-install).
+  - **Docker is installed.**  You may use command `docker --version` to check it. Refer to [docker's installation guidance](https://docs.docker.com/engine/install/ubuntu/) if it is not successfully installed.
+  - **[nvidia-container-runtime](https://github.com/NVIDIA/nvidia-container-runtime) or other device runtime is installed. And be configured as the default runtime of docker. Please configure it in [docker-config-file](https://docs.docker.com/config/daemon/#configure-the-docker-daemon), because kubespray will overwrite systemd's env.**
+    - You may use command `sudo docker run nvidia/cuda:10.0-base nvidia-smi` to check it. This command should output information of available GPUs if it is setup properly.
+    - Refer to [the installation guidance](./installation-faqs-and-troubleshooting.md#how-to-install-nvidia-container-runtime) if the it is not successfully set up.
   - OpenPAI reserves memory and CPU for service running, so make sure there are enough resource to run machine learning jobs. Check hardware requirements for details.
   - Dedicated servers for OpenPAI. OpenPAI manages all CPU, memory and GPU resources of servers. If there is any other workload, it may cause unknown problem due to insufficient resource.
 
@@ -179,7 +169,7 @@ machine-list:
 ./paictl.py service start -n hivedscheduler rest-server
 ```
 
-If you have configured any PV/PVC storage, please confirm the added worker node meets the PV's requirements. See [Confirm Worker Nodes Environment](./how-to-set-up-pv-storage.md#confirm-environment-on-worker-nodes) for details.
+If you have configured any PV/PVC storage, please confirm the added worker node meets the PV's requirements. See [Confirm Worker Nodes Environment](./how-to-set-up-storage.md#confirm-environment-on-worker-nodes) for details.
 
 ## How to Remove Nodes
 

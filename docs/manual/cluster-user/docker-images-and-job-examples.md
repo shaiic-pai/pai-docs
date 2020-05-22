@@ -59,7 +59,7 @@ There are also CPU/GPU/Multi-GPU/Horovod job examples for TensorFlow. Please che
 
 ## Use Your Own Custom Image
 
-If you want to build your own custom image instead of pre-built image, it is recommended to build based on ubuntu system, which includes bash, apt and other required dependency. Then you could add any requirements your job needs in the docker image, for example python, pip and tensorflow etc. Please take care of potential conflicts when adding additional dependencies.
+If you want to build your own custom image instead of pre-built images, it is recommended to build it basing on ubuntu system, which includes bash, apt and other required dependency. Then you could add any requirements your job needs in the docker image, for example, python, pip and tensorflow etc. Please take care of potential conflicts when adding additional dependencies.
 
 ## How to use Images from Private Registry
 

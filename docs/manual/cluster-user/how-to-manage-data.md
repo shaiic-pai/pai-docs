@@ -51,16 +51,18 @@ The `NFS_SERVER` and `NFS_PATH` can be found in the storage section on your prof
 
 #### Upload data to NFS server in Windows
 
-`storage-manager` will setup a `samba` server for data accessing.
+You could access `NFS` data by `Windows File Explorer` directly if:
 
-You could access `NFS` data by `Windows File Explore` directly if:
+  - The cluster administrator setup `NFS` by `storage-manager`. `storage-manager` will provide a `samba` server. 
+  - The cluster administrator configures a `samba` server along with the `NFS` server by himself.
 
-  - The cluster administrator setup `NFS` by `storage-manager`.
+To access it, use the file location `\\NFS_SERVER_ADDRESS` in `Window File Explorer`. It will prompt you to type in a username and a password:
 
-In AAD authentication mode, you can access nfs data through user domain name and password.
-In basic authentication mode, you can access nfs data through the configured username and password. The default username/password is: `smbuser/smbpwd`.
+  - If OpenPAI is in basic authentication mode (this mode means you use basic username/password to log in to OpenPAI webportal), you can access nfs data through its configured username and password. Please note it is different from the one you use to log in to OpenPAI. If the administrator uses `storage-manager`, the default username/password for NFS is `smbuser` and `smbpwd`.
 
-Please contact your administrator to confirm. If the administrator's setting is correct, you can use the file location `\\NFS_SERVER_ADDRESS` in `File Explore` to access data. (Please make sure the `network discovery` is on)
+  - If OpenPAI is in AAD authentication mode, you can access nfs data through user domain name and password.
+
+If it doesn't work, please make sure the `network discovery` is on, or contact your adminstrator for help.
 
 If you cannot use direct access, please try to mount NFS into Windows or using a Linux VM to upload data.
 
@@ -72,8 +74,8 @@ For Azure File, you can get the `storage account name` and `file share name` on 
 
 To upload data to Azure Blob or Azure File, please:
 
-1. Download [Azure Storage Explore](https://azure.microsoft.com/en-us/features/storage-explorer/)
-2. If you use AAD to login to PAI portal, the administrator should already grant you the permission to access storage. You can get the `storage account name`, `container name` and `file share name` on the profile page. Please use them to access storage in `Storage Explore`. For more details, please refer to [storage explore: add resource via azure ad](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#add-a-resource-via-azure-ad)
+1. Download [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
+2. If you use AAD to login to PAI portal, the administrator should already grant you the permission to access storage. You can get the `storage account name`, `container name` and `file share name` on the profile page. Please use them to access storage in `Azure Storage Explorer`. For more details, please refer to [storage explore: add resource via azure ad](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#add-a-resource-via-azure-ad)
 3. If you use basic authentication (username/password) to login to PAI portal. Please ask your administrator for the storage `access key`. Then you can add the storage by `access key` and `storage account name`. For more details, please refer to: [storage explore: use name and key](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#use-a-name-and-key)
 
 ## Use Storage in Jobs

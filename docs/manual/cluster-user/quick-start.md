@@ -19,13 +19,9 @@ The **job** of OpenPAI defines how to execute code(s) and command(s) in specifie
 
 For a quick start, please download [`hello-world-job.yaml`](./examples/hello-world-job.yaml).
 
-Then login to OpenPAI webportal, click `Submit Job` -> `Import Config`:
+Then login to OpenPAI webportal, click `Submit Job` -> `Import Config`, select the downloaded `hello-world-job.yaml` file, and submit the job:
 
-<img src="./imgs/quick-start-click-import.png" width="90%" height="90%" />
-
-Select the downloaded `hello-world-job.yaml` file, and submit the job:
-
-<img src="./imgs/quick-start-click-submit.png" width="90%" height="90%" />
+<img src="./imgs/import-config-submit.gif" width="90%" height="90%" >
 
 Now your first OpenPAI job has been kicked off!
 
@@ -41,13 +37,9 @@ As shown in the following picture, we will only show last 16KB logs in the dialo
 
 <img src="./imgs/view-stderr.png" width="90%" height="90%" />
 
-On the job detail page, you can also see metrics by clicking `Go to Job Metrics Page`.
+On the job detail page, you can also see metrics by clicking `Go to Job Metrics Page`. Then the CPU/GPU utilization and network will be shown in a new window:
 
-<img src="./imgs/go-to-job-metrics.png" width="90%" height="90%" />
-
-Then the CPU/GPU utilization and network will be shown in a new window:
-
-<img src="./imgs/grafana.png" width="90%" height="90%" />
+<img src="./imgs/view-metrics.gif" width="90%" height="90%" />
 
 ## Submit the Hello World Job Step by Step
 
@@ -57,7 +49,7 @@ Instead of importing a job configuration file, you can submit the hello world jo
 
 **Step 2.** Click **Submit Job** on the left pane, then click `Single` to reach this page.
 
-<img src="./imgs/hello-world-click-submit.png" width="90%" height="90%" alt="hello_world1" />
+<img src="./imgs/submit-single.gif" width="90%" height="90%" />
 
 **Step 3.** Select your virtual cluster, and give a name for your job. Then copy the following commands into the command box.
 
@@ -70,13 +62,15 @@ python train_image_classifier.py --dataset_name=cifar10 --dataset_dir=/tmp/data 
 
 Note: Please **Do Not** use `#` for comments or use `\` for line continuation in the command box. These symbols may break the syntax and will be supported in the future.
 
-<img src="./imgs/hello-world-command.png" width="90%" height="90%" alt="hello_world2" />
+<img src="./imgs/input-command.gif" width="90%" height="90%" />
 
 **Step 4.** Specify the resources you need. By default only GPU number could be set. Toggle the `custom` button if you need to customize CPU number and memory. Here we use a customized setting: 1 GPU, 1 CPU, and 6500 MB memory.
 
+<img src="./imgs/input-resource.gif" width="90%" height="90%" />
+
 **Step 5.** Specify the docker image. You can either use the listed docker images or take advantage of your own one. Here we select `TensorFlow 1.15.0 + Python 3.6 with GPU, CUDA 10.0`, which is a pre-built image. We will introduce more about docker images in [Docker Images and Job Examples](./docker-images-and-job-examples.md).
 
- <img src="./imgs/hello-world-resource-and-dockers.png" width="60%" height="60%" alt="hello_world3" />
+<img src="./imgs/input-docker.gif" width="90%" height="90%" />
 
 **Step 6.** Click **Submit** to submit the job.
 

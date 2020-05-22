@@ -112,6 +112,7 @@ if __name__ == '__main__':
     safe_copy(os.path.join(pai_dir, 'manual'), os.path.join('docs', 'manual'))
     safe_copy(os.path.join(pai_dir, 'README.md'), os.path.join('docs', 'index.md'))
     safe_copy(os.path.join(pai_dir, 'pailogo.jpg'), os.path.join('docs', 'pailogo.jpg'))
+    safe_copy(os.path.join(pai_dir, 'docs/images'), os.path.join('docs', 'docs/images'))
 
     # update indexes
     with open('mkdocs.yml') as fn:

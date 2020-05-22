@@ -7,12 +7,9 @@
 5. [Advanced Jobs](./advanced-jobs.md) (this document)
     - [Parameters and Secrets](#parameters-and-secrets)
     - [Multiple Task Roles](#multiple-task-roles)
-      - [Environmental Variables and Port Reservation](#environmental-variables-and-port-reservation)
     - [Job Exit Spec, Retry Policy, and Completion Policy](#job-exit-spec-retry-policy-and-completion-policy)
     - [Job Protocol, Export and Import Jobs](#job-protocol-export-and-import-jobs)
     - [Distributed Job Examples](#distributed-job-examples)
-      - [TensorFlow CIFAR10](#tensorflow-cifar10)
-      - [Horovod PyTorch](#horovod-pytorch)
     - [InfiniBand Jobs](#infiniband-jobs)
     - [Reference](#reference)
 6. [Use Marketplace](./use-marketplace.md)
@@ -37,9 +34,7 @@ If you use the `Distributed` button to submit jobs, then you can add different t
 
 What is task role? For single server jobs, there is only one task role. For distributed jobs, there may be multiple task roles. For example, when TensorFlow is used to running distributed jobs, it has two roles, including the parameter server and the worker.
 
-Instances is the number of instances of certain task role. In distributed jobs, it depends on how many instances are needed for a task role. For example, if it's 8 in a worker role of TensorFlow. It means there should be 8 Docker containers for the worker role.
-
-The picture below shows how to define task roles and instance numbers in a distributed job.
+`Instances` in the following picture is the number of instances of certain task role. In distributed jobs, it depends on how many instances are needed for a task role. For example, if it's 8 in a worker role of TensorFlow. It means there should be 8 Docker containers for the worker role.
 
    <img src="./imgs/taskrole-and-instance.png" width="100%" height="100%" />
 
@@ -99,7 +94,7 @@ In jobs, transient error will be always retried, and permanent error will never 
 
    <img src="./imgs/advanced-and-retry.png" width="100%" height="100%" />
 
-Here we have 3 settings: `Retry count`, `Task retry count`, and `Completion policy`. To date, we should be aware that a job is made up by multiple tasks. One task stands for a single instance in a task role. `Task retry count` is used for task-level retry. `Retry count` and `Completion policy` are used for job-level retry.
+Here we have 3 settings: `Retry count`, `Task retry count`, and `Completion policy`. To explain them, we should be aware that a job is made up by multiple tasks. One task stands for a single instance in a task role. `Task retry count` is used for task-level retry. `Retry count` and `Completion policy` are used for job-level retry.
 
 Firstly, let's look at `Retry count` and `Completion policy`.
 
@@ -107,17 +102,15 @@ In `Completion policy`, there are settings for `Min Failed Instances` and `Min S
 
 If a job doesn't succeed after it satisfies `Completion policy`, the failure is caused by an unknown error, and `Retry count` is larger than 0, the whole job will be retried. Set `Retry count` to a larger number if you need more retries.
 
-Finally, for `Task retry count`, it is the maximum retry number for a single task. A special notice is that, this setting won't work unless you set `extras.gangAllocation` to `false` in the [job protocol](#Job-Protocol-Export-and-Import-Jobs).
+Finally, for `Task retry count`, it is the maximum retry number for a single task. A special notice is that, this setting won't work unless you set `extras.gangAllocation` to `false` in the [job protocol](#job-protocol-export-and-import-jobs).
 
 ## Job Protocol, Export and Import Jobs
 
-In OpenPAI, all jobs are represented by [YAML](https://yaml.org/), a markup language. You can click the button Edit YAML below to edit the YAML definition directly.
-
-To edit job configuration directly, first, click `Edit YAML`:
+In OpenPAI, all jobs are represented by [YAML](https://yaml.org/), a markup language. You can click the button `Edit YAML` to edit the YAML definition directly:
 
    <img src="./imgs/click-edit-yaml.png" width="100%" height="100%" />
 
-Then modify the YAML definition, and use the `Save` button to apply changes:
+Use the `Save` button to apply any changes:
 
    <img src="./imgs/click-save-yaml.png" width="100%" height="100%" />
 

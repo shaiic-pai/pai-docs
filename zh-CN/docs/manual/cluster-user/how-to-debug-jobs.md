@@ -70,7 +70,7 @@ python minist_tensorboard.py --data_dir ./data --log_dir /mnt/tensorboard
 sleep 30m
 ```
 
-Then, please fill in the `Docker image` box with image name `openpai/standard:python_3.6-tensorflow_1.15.0-gpu`. Last but not least, toggle the `Enable TensorBoard` button in the `Tools` section.
+Then, please select `TensorFlow 1.15.0 + Python 3.6 with GPU, CUDA 10.0` as your docker image. Last but not least, toggle the `Enable TensorBoard` button in the `Tools` section.
 
    <img src="./imgs/enable-tensorboard.png" width="100%" height="100%" />
 

@@ -4,10 +4,10 @@
 2. [Installation FAQs and Troubleshooting](./installation-faqs-and-troubleshooting.md)
 3. [Basic Management Operations](./basic-management-operations.md)
 4. [How to Manage Users and Groups](./how-to-manage-users-and-groups.md)
-5. [How to Setup Kubernetes Persistent Volumes as Storage](./how-to-set-up-pv-storage.md)
+5. [How to Set Up Storage](./how-to-set-up-storage.md)
 6. [How to Set Up Virtual Clusters](./how-to-set-up-virtual-clusters.md) (this document)
     - [What is Hived Scheduler and How to Configure it](#what-is-hived-scheduler-and-how-to-configure-it)
-    - [How to Set Up Virtuall Clusters](#how-to-set-up-virtuall-clusters)
+    - [Set Up Virtual Clusters](#set-up-virtual-clusters)
     - [How to Grant VC to Users](#how-to-grant-vc-to-users)
     - [Different Hardwares in Worker Nodes](#different-hardwares-in-worker-nodes)
 7. [How to Add and Remove Nodes](./how-to-add-and-remove-nodes.md)
@@ -23,13 +23,13 @@ HiveD is a standalone component of OpenPAI, designed to be a Kubernetes Schedule
 
 Before we start, please read [this doc](https://github.com/microsoft/hivedscheduler/blob/master/doc/user-manual.md) to learn how to write hived scheduler configuration.
 
-## How to Set Up Virtual Clusters
+## Set Up Virtual Clusters
 
 In [`services-configuration.yaml`](./basic-management-operations.md#pai-service-management-and-paictl), there is a section for hived scheduler, for example:
 
 ```yaml
-# service-configuration.yaml
-……
+# services-configuration.yaml
+...
 hivedscheduler:
   config: |
     physicalCluster:
@@ -57,14 +57,14 @@ hivedscheduler:
         virtualCells:
         - cellType: DT-NODE-POOL.DT-NODE
           cellNumber: 3
-……
+...
 ```
 
 If you have followed the [installation guide](./installation-guide.md), you would find similar setting in your [`services-configuration.yaml`](./basic-management-operations.md#pai-service-management-and-paictl). The detailed explanation of these fields are in the [hived scheduler document](https://github.com/microsoft/hivedscheduler/blob/master/doc/user-manual.md). You can update the configuration and set up virtual clusters. For example, in the above settings, we have 3 nodes, `worker1`, `worker2` and `worker3`. They are all in the `default` virtual cluster. If we want to create two VCs, one is called `default` and has 2 nodes, the other is called `new` and has 1 node, we can first modify `services-configuration.yaml`:
 
 ```yaml
-# service-configuration.yaml
-……
+# services-configuration.yaml
+...
 hivedscheduler:
   config: |
     physicalCluster:
@@ -96,7 +96,7 @@ hivedscheduler:
         virtualCells:
         - cellType: DT-NODE-POOL.DT-NODE
           cellNumber: 1
-……
+...
 ```
 
 After modification, use the following commands to apply the settings:
@@ -104,7 +104,6 @@ After modification, use the following commands to apply the settings:
 ```bash
 ./paictl.py service stop -n rest-server hivedscheduler
 ./paictl.py config push -p <config-folder> -m service
-./paictl.py service start -n cluster-configuration
 ./paictl.py service start -n hivedscheduler rest-server
 ```
 
@@ -130,34 +129,33 @@ First, find the following section in your [`services-configuration.yaml`](./basi
 
 ```yaml
 # services-configuration.yaml
-……
+...
 group-manager:
-    ...
-    grouplist:
+  ...
+  grouplist:
     - groupname: group1
-        externalName: sg1
-        extension:
-          acls:
-            admin: false
-            virtualClusters: ["vc1"]
-            storageConfigs: ["azure-file-storage"]
+      externalName: sg1
+      extension:
+        acls:
+          admin: false
+          virtualClusters: ["vc1"]
+          storageConfigs: ["azure-file-storage"]
     - groupname: group2
-        externalName: sg2
-        extension:
-          acls:
-            admin: false
-            virtualClusters: ["vc1", "vc2"]
-            storageConfigs: ["nfs-storage"]
-……
+      externalName: sg2
+      extension:
+        acls:
+          admin: false
+          virtualClusters: ["vc1", "vc2"]
+          storageConfigs: ["nfs-storage"]
+...
 ```
 
 This should be self-explanatory. The `virtualClusters` field is used to manage VC access for different groups. Use the following commands to apply your configuration change:
 
 ```bash
-./paictl.py service stop -n rest-server hivedscheduler
+./paictl.py service stop -n rest-server
 ./paictl.py config push -p <config-folder> -m service
-./paictl.py service start -n cluster-configuration
-./paictl.py service start -n hivedscheduler rest-server
+./paictl.py service start -n rest-server
 ```
 
 ## Different Hardwares in Worker Nodes
@@ -187,7 +185,7 @@ hivedscheduler:
           childCellNumber: 2
         V100-NODE:
           childCellType: V100
-          childCellNumber: 4 
+          childCellNumber: 4
           isNodeLevel: true
         V100-NODE-POOL:
           childCellType: V100-NODE

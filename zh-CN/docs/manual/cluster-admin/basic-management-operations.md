@@ -6,7 +6,7 @@
     - [Management on Webportal](#management-on-webportal)
     - [PAI Service Management and Paictl](#pai-service-management-and-paictl)
 4. [How to Manage Users and Groups](./how-to-manage-users-and-groups.md)
-5. [How to Setup Kubernetes Persistent Volumes as Storage](./how-to-set-up-pv-storage.md)
+5. [How to Set Up Storage](./how-to-set-up-storage.md)
 6. [How to Set Up Virtual Clusters](./how-to-set-up-virtual-clusters.md)
 7. [How to Add and Remove Nodes](./how-to-add-and-remove-nodes.md)
 8. [How to use CPU Nodes](./how-to-use-cpu-nodes.md)
@@ -38,7 +38,7 @@ The services page shows OpenPAI services deployed in Kubernetes. These services 
 
 ### User Management
 
-The user management page let you create, modify, and delete users. Users have two types: non-admin users and admin users. You can choose which type to create. This page only shows up when OpenPAI is deployed in basic authentication mode, which is the default mode. If your cluster uses [AAD](./how-to-manage-users-and-groups.md#users-and-groups-in-aad-mode) to manage users, this page won't be available to you.
+The user management page lets you create, modify, and delete users. Users have two types: non-admin users and admin users. You can choose which type to create. This page only shows up when OpenPAI is deployed in basic authentication mode, which is the default mode. If your cluster uses [AAD](./how-to-manage-users-and-groups.md#users-and-groups-in-aad-mode) to manage users, this page won't be available to you.
 
    <img src="./imgs/services.png" width="100%" height="100%" />
 
@@ -57,29 +57,32 @@ There is a shortcut to k8s dashboard on the webportal. However, it needs special
 
 To use it, you should first set up `https` access (Using `http://<ip>` won't work) for OpenPAI. Then, on the dev box machine, follow the steps below:
 
-1. Save following yaml text as `admin-user.yaml`
-    ```yaml
-    apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      name: admin-user
-      namespace: kube-system
-    ---
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      name: admin-user
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: cluster-admin
-    subjects:
-    - kind: ServiceAccount
-      name: admin-user
-      namespace: kube-system
-    ```
-2. Run `kubectl apply -f admin-user.yaml`
-3. Run `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')`. It will print the token which can be used to login k8s-dashboard.
+**Step 1.** Save following yaml text as `admin-user.yaml`
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+```
+
+**Step 2.** Run `kubectl apply -f admin-user.yaml`
+
+**Step 3.** Run `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')`. It will print the token which can be used to login k8s-dashboard.
 
 ## PAI Service Management and Paictl
 

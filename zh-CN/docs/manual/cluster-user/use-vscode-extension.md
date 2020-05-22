@@ -62,7 +62,7 @@ After added a cluster configuration, you can find the cluster in *PAI CLUSTER EX
 To submit a job yaml, please follow the steps below:
 
 1. Double click `Create Job Config...` in OpenPAI cluster Explorer, and then specify file name and location to create a job configuration file.
-2. Update job configuration as needed. If you are not familiar with this configuration file, learn from [here](https://github.com/microsoft/pai/blob/master/docs/marketplace-and-submit-job-v2/marketplace-and-submit-job-v2.md#introduction-to-yaml-file).
+2. Update job configuration as needed.
 3. Right click on the created job configuration file, then click on `Submit Job to PAI Cluster`. The client will upload files to OpenPAI and create a job. Once it's done, there is a notification at right bottom corner, you can click to open the job detail page.
 
     If there are multiple OpenPAI clusters, you need to choose one.

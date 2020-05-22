@@ -4,7 +4,7 @@
 2. [Installation FAQs and Troubleshooting](./installation-faqs-and-troubleshooting.md)
 3. [Basic Management Operations](./basic-management-operations.md)
 4. [How to Manage Users and Groups](./how-to-manage-users-and-groups.md)
-5. [How to Setup Kubernetes Persistent Volumes as Storage](./how-to-set-up-pv-storage.md)
+5. [How to Set Up Storage](./how-to-set-up-storage.md)
 6. [How to Set Up Virtual Clusters](./how-to-set-up-virtual-clusters.md)
 7. [How to Add and Remove Nodes](./how-to-add-and-remove-nodes.md)
 8. [How to use CPU Nodes](./how-to-use-cpu-nodes.md)
@@ -19,7 +19,7 @@
 
 Webportal plugin provides a way to add custom web pages to the OpenPAI webportal. It can communicate with other PAI services, like the rest-server. It could provide customized solutions to different requirements.
 
-As an administrator, you can configure the web portal plugins in the `webportal.plugins` field of `service-configuration.yaml` (If you don't know what `service-configuration.yaml` is, please refer to [PAI Service Management and Paictl](./basic-management-operations.md#pai-service-management-and-paictl)):
+As an administrator, you can configure the web portal plugins in the `webportal.plugins` field of `services-configuration.yaml` (If you don't know what `services-configuration.yaml` is, please refer to [PAI Service Management and Paictl](./basic-management-operations.md#pai-service-management-and-paictl)):
 
 ```yaml
 webportal:
@@ -49,8 +49,8 @@ After modifying the configuration, push it to the cluster and restart webportal 
 
 [Openpaimarketplace](https://github.com/microsoft/openpaimarketplace) is a place which stores examples and job templates of openpai. Users could use openpaimarketplace to share their jobs or run-and-learn others' sharing job.
 
-To deploy openpaimarketplace, please refer to [the project doc](https://github.com/microsoft/openpaimarketplace#deployment) about how to deploy the marketplace service and webportal plugin.
+To deploy openpaimarketplace, please refer to [the project doc](https://github.com/microsoft/openpaimarketplace) about how to deploy the marketplace service and webportal plugin.
 
-After deploy openpaimarketplace, follow the [previous part](#how-to-install-a-webportal-plugin) to change the webportal configuration with marketplace plugin url and restart webportal. Then you could use marketplace from the sidebar.
+After deployment, follow the [previous part](#how-to-install-a-webportal-plugin) to change the webportal configuration with marketplace plugin url and restart webportal. Then you could use marketplace from the sidebar.
 
    <img src="./imgs/marketplace.png" width="100%" height="100%" /> 

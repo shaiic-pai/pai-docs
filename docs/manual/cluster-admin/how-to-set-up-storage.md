@@ -1,10 +1,10 @@
-# How to Setup Kubernetes Persistent Volumes as Storage
+# How to Set Up Storage
 
 1. [Installation Guide](./installation-guide.md)
 2. [Installation FAQs and Troubleshooting](./installation-faqs-and-troubleshooting.md)
 3. [Basic Management Operations](./basic-management-operations.md)
 4. [How to Manage Users and Groups](./how-to-manage-users-and-groups.md)
-5. [How to Setup Kubernetes Persistent Volumes as Storage](./how-to-set-up-pv-storage.md) (this document)
+5. [How to Set Up Storage](./how-to-set-up-storage.md) (this document)
     - [Create PV/PVC on Kubernetes](#create-pvpvc-on-kubernetes)
     - [Confirm Environment on Worker Nodes](#confirm-environment-on-worker-nodes)
     - [Assign Storage to PAI Groups](#assign-storage-to-pai-groups)
@@ -89,7 +89,7 @@ Please refer to [this document](https://github.com/Azure/kubernetes-volume-drive
 
 If you cannot mount blobfuse PVC into containers and the corresponding job in OpenPAI sticks in `WAITING` status, please double check the following requirements:
 
-1. Every worker node should have `blobfuse` installed. Try the following commands to ensure:
+**requirement 1.** Every worker node should have `blobfuse` installed. Try the following commands to ensure:
 
 ```bash
 # change 16.04 to a different release if your system is not Ubuntu 16.04
@@ -99,29 +99,14 @@ sudo apt-get update
 sudo apt-get install --assume-yes blobfuse fuse
 ```
 
-2. `blobfuse` driver has been installed:
+**requirement 2.** `blobfuse` FlexVolume driver has been installed:
 
-```bash
-kubectl apply -f https://raw.githubusercontent.com/Azure/kubernetes-volume-drivers/master/flexvolume/blobfuse/deployment/blobfuse-flexvol-installer-1.9.yaml
+```sh
+curl -s https://raw.githubusercontent.com/Azure/kubernetes-volume-drivers/master/flexvolume/blobfuse/deployment/blobfuse-flexvol-installer-1.9.yaml \
+  | sed "s#/etc/kubernetes/volumeplugins/#/usr/libexec/kubernetes/kubelet-plugins/volume/exec/#g" \
+  | kubectl apply -f -
 ```
 
-3. On every worker node, enable FlexVolume driver in `kubelet` service.
-
-Add `--volume-plugin-dir=/etc/kubernetes/volumeplugins` to file `/etc/systemd/system/kubelet.service`:
-
-```
-......
-ExecStart=/usr/local/bin/kubelet \
-                --volume-plugin-dir=/etc/kubernetes/volumeplugins \
-......
-```
-
-Restart kubelet:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
-```
 
 ### Azure File
 
@@ -142,22 +127,22 @@ metadata:
   labels:
     name: azure-file-storage
 spec:
-capacity:
-  storage: 5Gi
-accessModes:
-  - ReadWriteMany
-storageClassName: azurefile
-azureFile:
-  secretName: azure-secret
-  shareName: aksshare
-  readOnly: false
-mountOptions:
-  - dir_mode=0777
-  - file_mode=0777
-  - uid=1000
-  - gid=1000
-  - mfsymlinks
-  - nobrl
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile
+  azureFile:
+    secretName: azure-secret
+    shareName: aksshare
+    readOnly: false
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=1000
+    - gid=1000
+    - mfsymlinks
+    - nobrl
 ---
 # Azure File Persistent Volume Claim
 apiVersion: v1
@@ -167,13 +152,13 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-storageClassName: azurefile
-resources:
-  requests:
-    storage: 5Gi
-selector:
-  matchLabels:
-    name: azure-file-storage
+  storageClassName: azurefile
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      name: azure-file-storage
 ```
 
 More details on Azure File volume could be found in [this document](https://docs.microsoft.com/en-us/azure/aks/azure-files-volume).
@@ -186,11 +171,11 @@ Since different PVs have different requirements, you should check the environmen
 
 ## Assign Storage to PAI Groups
 
-The PVC name is used as storage name in OpenPAI. After you have set up the PV/PVC and checked the environment, you need to assign storage to users. In OpenPAI, the name of the PVC is used as the storage name, and the access of different storages is managed by [user groups](./how-to-manage-users-and-groups.md). 
+The PVC name is used as storage name in OpenPAI. After you have set up the PV/PVC and checked the environment, you need to assign storage to users. In OpenPAI, the name of the PVC is used as the storage name, and the access of different storages is managed by [user groups](./how-to-manage-users-and-groups.md).
 
-There are two ways to assign storage to user groups: 
+There are two ways to assign storage to user groups:
 
-### 1. Modify service configuration. 
+### 1. Modify service configuration.
 
 It is only feasible in [AAD authentication clusters](./how-to-manage-users-and-groups.md#users-and-groups-in-aad-mode). If you are using [basic authentication](./how-to-manage-users-and-groups.md#users-and-groups-in-basic-authentication-mode), please refer to [Use RESTful API](#2-use-restful-api).
 
@@ -198,8 +183,8 @@ To assign storage to groups, modify your [`services-configuration.yaml` file](./
 
 ```yaml
 authentication:
-...
-group-manager:
+  ...
+  group-manager:
     ...
     grouplist:
     - groupname: group1
@@ -240,16 +225,16 @@ For example, if you want to assign `nfs-storage` PVC to `default` group. First, 
 
 ```json
 {
-  "groupname": "default",
-  "description": "group for default vc",
-  "externalName": "",
-  "extension": {
-    "acls": {
-      "storageConfigs": [],
-      "admin": false,
-      "virtualClusters": ["default"]
-    }
-  }
+  "groupname": "default",
+  "description": "group for default vc",
+  "externalName": "",
+  "extension": {
+    "acls": {
+      "storageConfigs": [],
+      "admin": false,
+      "virtualClusters": ["default"]
+    }
+  }
 }
 ```
 
@@ -259,13 +244,13 @@ The GET request must use header `Authorization: Bearer <token>` for authorizatio
 {
   "data": {
     "groupname": "default",
-    "extension": {
-      "acls": {
-        "storageConfigs": ["nfs-storage"],
-        "admin": false,
-        "virtualClusters": ["default"]
-      }
-    }
+    "extension": {
+      "acls": {
+        "storageConfigs": ["nfs-storage"],
+        "admin": false,
+        "virtualClusters": ["default"]
+      }
+    }
   },
   "patch": true
 }

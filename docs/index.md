@@ -7,7 +7,7 @@
 [![Join the chat at https://gitter.im/Microsoft/pai](https://badges.gitter.im/Microsoft/pai.svg)](https://gitter.im/Microsoft/pai?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Version](https://img.shields.io/github/release/Microsoft/pai.svg)](https://github.com/Microsoft/pai/releases/latest)
 
-**OpenPAI [v1.0.0](./RELEASE_NOTE.md#may-2020-version-100) has been released!**
+**OpenPAI [v1.0.0](https://github.com/microsoft/pai/blob/master/RELEASE_NOTE.md#may-2020-version-100) has been released!**
 
 With the release of v1.0, OpenPAI is switching to a more robust, more powerful and lightweight architecture. OpenPAI is also becoming more and more modular so that the platform can be easily customized and expanded to suit new needs. OpenPAI also provides many AI user-friendly features, making it easier for end users and administrators to complete daily AI tasks.
 
@@ -91,7 +91,7 @@ Pre-built docker for popular AI frameworks. Easy to include heterogeneous hardwa
 
 #### Most complete solution and easy to extend
 
-OpenPAI is a most complete solution for deep learning, support virtual cluster, compatible with Kubernetes eco-system, complete training pipeline at one cluster etc. OpenPAI is architected in a modular way: different module can be plugged in as appropriate. [Here](./docs/system_architecture.md) is the architecture of OpenPAI, highlighting technical innovations of the platform.
+OpenPAI is a most complete solution for deep learning, support virtual cluster, compatible with Kubernetes eco-system, complete training pipeline at one cluster etc. OpenPAI is architected in a modular way: different module can be plugged in as appropriate. [Here](https://github.com/microsoft/pai/blob/master/docs/system_architecture.md) is the architecture of OpenPAI, highlighting technical innovations of the platform.
 
 ## Get started
 
@@ -206,7 +206,7 @@ We are working on a set of major features improvement and refactor, anyone who i
 
 ### Contributors
 
-One key purpose of PAI is to support the highly diversified requirements from academia and industry. PAI is completely open: it is under the MIT license. This makes PAI particularly attractive to evaluate various research ideas, which include but not limited to the [components](./docs/research_education.md).
+One key purpose of PAI is to support the highly diversified requirements from academia and industry. PAI is completely open: it is under the MIT license. This makes PAI particularly attractive to evaluate various research ideas, which include but not limited to the [components](https://github.com/microsoft/pai/blob/master/docs/research_education.md).
 
 PAI operates in an open model. It is initially designed and developed by [Microsoft Research (MSR)](https://www.microsoft.com/en-us/research/group/systems-research-group-asia/) and [Microsoft Software Technology Center Asia (STCA)](https://www.microsoft.com/en-us/ard/default.aspx) platform team.
 We are glad to have [Peking University](http://eecs.pku.edu.cn/EN/), [Xi'an Jiaotong University](http://www.aiar.xjtu.edu.cn/), [Zhejiang University](http://www.cesc.zju.edu.cn/index_e.htm), [University of Science and Technology of China](http://eeis.ustc.edu.cn/) and SHANGHAI INESA AI INNOVATION CENTER joined us to develop the platform jointly.

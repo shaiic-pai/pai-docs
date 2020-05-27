@@ -8,14 +8,12 @@
 6. [Use Marketplace](./use-marketplace.md)
 7. [Use VSCode Extension](./use-vscode-extension.md) (this document)
     - [Connect to an OpenPAI cluster](#connect-to-an-openpai-cluster)
-      - [Basic login](#basic-login)
-      - [AAD login](#aad-login)
     - [Submit job](#submit-job)
     - [Reference](#reference)
 8. [Use Jupyter Notebook Extension](./use-jupyter-notebook-extension.md)
 
 
-OpenPAI VS Code Client is a VSCode extension to connect OpenPAI clusters, submit AI jobs, simulate jobs locally, manage files, and so on.
+[OpenPAI VS Code Client](https://github.com/microsoft/openpaivscode) is a VSCode extension to connect OpenPAI clusters, submit AI jobs, simulate jobs locally, manage files, and so on. Please use the released vsix file on [this page](https://github.com/microsoft/openpaivscode/releases) to install it.
 
 ## Connect to an OpenPAI cluster
 
@@ -64,7 +62,7 @@ After added a cluster configuration, you can find the cluster in *PAI CLUSTER EX
 To submit a job yaml, please follow the steps below:
 
 1. Double click `Create Job Config...` in OpenPAI cluster Explorer, and then specify file name and location to create a job configuration file.
-2. Update job configuration as needed. If you are not familiar with this configuration file, learn from [here](https://github.com/microsoft/pai/blob/master/docs/marketplace-and-submit-job-v2/marketplace-and-submit-job-v2.md#introduction-to-yaml-file).
+2. Update job configuration as needed.
 3. Right click on the created job configuration file, then click on `Submit Job to PAI Cluster`. The client will upload files to OpenPAI and create a job. Once it's done, there is a notification at right bottom corner, you can click to open the job detail page.
 
     If there are multiple OpenPAI clusters, you need to choose one.

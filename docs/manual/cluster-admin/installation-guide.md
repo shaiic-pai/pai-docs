@@ -16,7 +16,7 @@
 11. [How to Uninstall OpenPAI](./how-to-uninstall-openpai.md)
 12. [Upgrade Guide](./upgrade-guide.md)
 
-There are breaking changes since OpenPAI `v1.0.0`. Before `v1.0.0`, OpenPAI was based on Yarn and Kubernetes, and data was managed by HDFS. Since `v1.0.0`, OpenPAI has switched to a pure Kubernetes-based architecture. Many new features, such as `AAD authorization`, `Hivedscheduler`, `Kube Runtime`, `Marketplace`, etc., are also included. If you still want to install the old Yarn-based OpenPAI, please stay with `v0.14.0`.
+The architecture of OpenPAI has been updated and optimized in `v1.0.0`. Before `v1.0.0`, OpenPAI was based on Yarn and Kubernetes, and data was managed by HDFS. Since `v1.0.0`, OpenPAI has switched to a pure Kubernetes-based architecture. Many new features, such as `AAD authorization`, `Hivedscheduler`, `Kube Runtime`, `Marketplace`, etc., are also included. If you still want to install the old Yarn-based OpenPAI, please stay with `v0.14.0`.
 
 To install OpenPAI >= `v1.0.0`, please first check [Installation Requirements](#installation-requirements). Then, if you don't have older version OpenPAI installed, please follow [Installation From Scratch](#installation-from-scratch). Otherwise, please first follow [Clean Previous Deployment](#clean-previous-deployment), then follow [Installation From Scratch](#installation-from-scratch).
 
@@ -59,14 +59,18 @@ To be detailed, please check the following requirements before installation:
         - **Have GPU and GPU driver is installed.**  You may use [a command](./installation-faqs-and-troubleshooting.md#how-to-check-whether-the-gpu-driver-is-installed) to check it. Refer to [the installation guidance](./installation-faqs-and-troubleshooting.md#how-to-install-gpu-driver) in FAQs if the driver is not successfully installed. If you are wondering which version of GPU driver you should use, please also refer to [FAQs](./installation-faqs-and-troubleshooting.md#which-version-of-nvidia-driver-should-i-install).
         - **Docker is installed.**  You may use command `docker --version` to check it. Refer to [docker's installation guidance](https://docs.docker.com/engine/install/ubuntu/) if it is not successfully installed.
         - **[nvidia-container-runtime](https://github.com/NVIDIA/nvidia-container-runtime) or other device runtime is installed. And be configured as the default runtime of docker. Please configure it in [docker-config-file](https://docs.docker.com/config/daemon/#configure-the-docker-daemon), because kubespray will overwrite systemd's env.**
-          - You may use command `sudo docker run nvidia/cuda:10.0-base nvidia-smi` to check it. This command should output information of available GPUs if it is setup properly.
-          - Refer to [the installation guidance](./installation-faqs-and-troubleshooting.md#how-to-install-nvidia-container-runtime) if the it is not successfully set up.
+            - You may use command `sudo docker run nvidia/cuda:10.0-base nvidia-smi` to check it. This command should output information of available GPUs if it is setup properly.
+            - Refer to [the installation guidance](./installation-faqs-and-troubleshooting.md#how-to-install-nvidia-container-runtime) if the it is not successfully set up.
         - OpenPAI reserves memory and CPU for service running, so make sure there are enough resource to run machine learning jobs. Check hardware requirements for details.
         - Dedicated servers for OpenPAI. OpenPAI manages all CPU, memory and GPU resources of servers. If there is any other workload, it may cause unknown problem due to insufficient resource.
 
 #### Tips to Use CPU-only Worker
 
-Currently, the support for CPU-only worker is limited. The installation of OpenPAI requires at least one GPU worker to work, which means you cannot set up CPU-only worker from scratch. However, after PAI is successfully installed with GPU workers, you can attach CPU-only worker and set up a CPU-only virtual cluster. Please refer to [How to use CPU Nodes](./how-to-use-cpu-nodes.md) for details.
+Currently, the support for CPU-only worker is limited. If you have both GPU workers and CPU workers, please first set up PAI with GPU workers only. After PAI is successfully installed, you can attach CPU workers to it and set up a CPU-only virtual cluster. Please refer to [How to use CPU Nodes](./how-to-use-cpu-nodes.md) for details. If you only have CPU workers, we haven't had an official installation support yet. Please submit an issue for feature request.
+
+#### Tips for Network-related Issues
+
+If you are facing network issues such as the machine cannot download some file, or cannot connect to some docker registry, please combine the prompted error log and kubespray as a keyword, and search for solution. You can also refer to the [installation troubleshooting](./installation-faqs-and-troubleshooting.md#troubleshooting) and [this issue](https://github.com/microsoft/pai/issues/4516).
 
 ## Installation From Scratch
 
@@ -77,6 +81,9 @@ Besides the requirements above, this installation script also requires that **al
 After you have decided all of the machines, please create a `master.csv`, a `worker.csv`, and a `config` file on the **dev box machine**. The files represent master machine list, worker machine list, and a customized configuration, respectively. The following is the format and example of these 3 files.
 
 ###### `master.csv` format
+
+Please **do not** insert blank lines or use spaces in this file, and please **do not** use upper case alphabet letters for hostname.
+
 ```
 hostname(Node Name in k8s),host-ip
 ```
@@ -85,6 +92,9 @@ hostname(Node Name in k8s),host-ip
 openpai-master-01,10.1.0.1
 ```
 ###### `worker.csv` format
+
+Please **do not** insert blank lines or use spaces in this file, and please **do not** use upper case alphabet letters for hostname.
+
 ```
 hostname(Node Name in k8s),host-ip
 ```
@@ -163,10 +173,12 @@ docker_image_tag: v1.0.0
 # hyperkube_download_url: "https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/hyperkube"
 
 
-# openpai_kube_network_plugin: weave
+# openpai_kube_network_plugin: calico
 ```
 
 `branch-name` and `docker-image-tag` stands for OpenPAI version you want to install. The `user` and `password` is the SSH username and password from dev box machine to master machines and worker machines. In other words, you should make sure all masters and workers share the same SSH username and password. As for optional configurations, customize them if you know exactly what they are.
+
+**For Azure Users**: If you are deploying OpenPAI in Azure, please uncomment `openpai_kube_network_plugin: calico` in the config file above, and change it to `openpai_kube_network_plugin: weave`. It is because Azure doesn't support calico. See [here](https://docs.projectcalico.org/reference/public-cloud/azure#why-doesnt-azure-support-calico-networking) for details.
 
 ### Start Installation
 
@@ -178,13 +190,13 @@ git checkout pai-1.0.y  # change to a different branch if you want to deploy a d
 cd pai/contrib/kubespray
 ```
 
-The folder `pai/contrib/kubespray` contains installation scripts, both for kubespray and OpenPAI services. Please run the following script to deploy Kubernetes first:
+The folder `pai/contrib/kubespray` contains installation scripts, both for kubespray and OpenPAI services. Please run the following script to deploy Kubernetes first. You should modify `/path/to` to your own absolute path for these files. **Do not** use relative path. It will cause an error.
 
 ```bash
 /bin/bash quick-start-kubespray.sh -m /path/to/master.csv -w /path/to/worker.csv -c /path/to/config
 ```
 
-After Kubernetes is successfully started, run the following script to start OpenPAI services:
+After Kubernetes is successfully started, run the following script to start OpenPAI services. You should modify `/path/to` to your own absolute path for these files. **Do not** use relative path. It will cause an error.
 
 ```bash
 /bin/bash quick-start-service.sh -m /path/to/master.csv -w /path/to/worker.csv -c /path/to/config
@@ -211,6 +223,7 @@ If there is any error, please double check the environment requirements first. H
 ```bash
 /bin/bash requirement.sh -m /path/to/master.csv -w /path/to/worker.csv -c /path/to/config
 ```
+
 
 ### Keep a Folder
 

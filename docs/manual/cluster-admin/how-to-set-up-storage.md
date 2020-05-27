@@ -89,7 +89,7 @@ Please refer to [this document](https://github.com/Azure/kubernetes-volume-drive
 
 If you cannot mount blobfuse PVC into containers and the corresponding job in OpenPAI sticks in `WAITING` status, please double check the following requirements:
 
-1. Every worker node should have `blobfuse` installed. Try the following commands to ensure:
+**requirement 1.** Every worker node should have `blobfuse` installed. Try the following commands to ensure:
 
 ```bash
 # change 16.04 to a different release if your system is not Ubuntu 16.04
@@ -99,7 +99,7 @@ sudo apt-get update
 sudo apt-get install --assume-yes blobfuse fuse
 ```
 
-2. `blobfuse` FlexVolume driver has been installed:
+**requirement 2.** `blobfuse` FlexVolume driver has been installed:
 
 ```sh
 curl -s https://raw.githubusercontent.com/Azure/kubernetes-volume-drivers/master/flexvolume/blobfuse/deployment/blobfuse-flexvol-installer-1.9.yaml \
